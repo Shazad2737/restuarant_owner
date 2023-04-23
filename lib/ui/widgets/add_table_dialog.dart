@@ -1,10 +1,12 @@
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:restaurant_owner/blocs/table/table_bloc.dart';
 import 'package:restaurant_owner/ui/widgets/custom_alert_dialog.dart';
 import 'package:restaurant_owner/ui/widgets/custom_card.dart';
+import 'package:restaurant_owner/util/value_validators.dart';
 
 class AddTableDialog extends StatefulWidget {
-  const AddTableDialog({super.key});
+  final TableBloc tableBloc;
+  const AddTableDialog({super.key, required this.tableBloc});
 
   @override
   State<AddTableDialog> createState() => _AddTableDialogState();
@@ -13,7 +15,6 @@ class AddTableDialog extends StatefulWidget {
 class _AddTableDialogState extends State<AddTableDialog> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _nameController = TextEditingController();
-  PlatformFile? selectedFile;
   @override
   Widget build(BuildContext context) {
     return CustomAlertDialog(
@@ -37,13 +38,7 @@ class _AddTableDialogState extends State<AddTableDialog> {
             CustomCard(
               child: TextFormField(
                 controller: _nameController,
-                validator: (value) {
-                  if (value != null && value.trim().isNotEmpty) {
-                    return null;
-                  } else {
-                    return 'Please enter table name';
-                  }
-                },
+                validator: alphaNumericValidator,
                 decoration: const InputDecoration(
                   hintText: 'eg.12',
                 ),
@@ -54,7 +49,15 @@ class _AddTableDialogState extends State<AddTableDialog> {
       ),
       primaryButtonLabel: 'Add',
       primaryOnPressed: () {
-        if (_formKey.currentState!.validate()) {}
+        if (_formKey.currentState!.validate()) {
+          widget.tableBloc.add(
+            AddTableEvent(
+              name: _nameController.text.trim(),
+            ),
+          );
+
+          Navigator.pop(context);
+        }
       },
     );
   }

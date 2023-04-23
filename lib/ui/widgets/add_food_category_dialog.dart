@@ -1,12 +1,15 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:restaurant_owner/blocs/food_category/food_category_bloc.dart';
 import 'package:restaurant_owner/ui/widgets/custom_action_button.dart';
 import 'package:restaurant_owner/ui/widgets/custom_alert_dialog.dart';
 import 'package:restaurant_owner/ui/widgets/custom_card.dart';
 import 'package:restaurant_owner/util/custom_file_picker.dart';
+import 'package:restaurant_owner/util/value_validators.dart';
 
 class AddFoodCategoryDialog extends StatefulWidget {
-  const AddFoodCategoryDialog({super.key});
+  final FoodCategoryBloc foodCategoryBloc;
+  const AddFoodCategoryDialog({super.key, required this.foodCategoryBloc});
 
   @override
   State<AddFoodCategoryDialog> createState() => _AddFoodCategoryDialogState();
@@ -39,13 +42,7 @@ class _AddFoodCategoryDialogState extends State<AddFoodCategoryDialog> {
             CustomCard(
               child: TextFormField(
                 controller: _nameController,
-                validator: (value) {
-                  if (value != null && value.trim().isNotEmpty) {
-                    return null;
-                  } else {
-                    return 'Please enter category name';
-                  }
-                },
+                validator: alphaNumericValidator,
                 decoration: const InputDecoration(
                   hintText: 'eg.Fast Food',
                 ),
@@ -78,6 +75,13 @@ class _AddFoodCategoryDialogState extends State<AddFoodCategoryDialog> {
       primaryOnPressed: () {
         if (_formKey.currentState!.validate()) {
           if (selectedFile != null) {
+            widget.foodCategoryBloc.add(
+              AddFoodCategoryEvent(
+                name: _nameController.text.trim(),
+                file: selectedFile!,
+              ),
+            );
+            Navigator.pop(context);
           } else {
             showDialog(
               context: context,

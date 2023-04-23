@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:restaurant_owner/blocs/food_category/food_category_bloc.dart';
 import 'package:restaurant_owner/ui/widgets/custom_action_button.dart';
 import 'package:restaurant_owner/ui/widgets/custom_card.dart';
 
 class CategoryCard extends StatelessWidget {
-  final Color? hoverColor;
-  final bool isOnDialog;
+  final FoodCategoryBloc foodCategoryBloc;
+  final Map<String, dynamic> categoryDetails;
   const CategoryCard({
     super.key,
-    this.hoverColor = Colors.green,
-    this.isOnDialog = false,
+    required this.foodCategoryBloc,
+    required this.categoryDetails,
   });
 
   @override
   Widget build(BuildContext context) {
     return CustomCard(
-      hoverBorderColor: hoverColor!,
+      hoverBorderColor: Colors.green,
       child: SizedBox(
         width: 310,
         child: Padding(
@@ -24,7 +25,7 @@ class CategoryCard extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                '#12',
+                '#${categoryDetails['id'].toString()}',
                 style: Theme.of(context).textTheme.titleSmall?.copyWith(
                       color: Colors.black,
                     ),
@@ -36,7 +37,7 @@ class CategoryCard extends StatelessWidget {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(20),
                   child: Image.network(
-                    'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=481&q=80',
+                    categoryDetails['image_url'],
                     height: 280,
                     width: 280,
                     fit: BoxFit.cover,
@@ -47,7 +48,7 @@ class CategoryCard extends StatelessWidget {
                 height: 10,
               ),
               Text(
-                'Fast Food',
+                categoryDetails['category'],
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
                       color: Colors.black,
                       fontWeight: FontWeight.bold,
@@ -60,7 +61,13 @@ class CategoryCard extends StatelessWidget {
                 iconData: Icons.delete_forever_outlined,
                 color: Colors.red[700]!,
                 label: 'Delete',
-                onPressed: () {},
+                onPressed: () {
+                  foodCategoryBloc.add(
+                    DeleteFoodCategoryEvent(
+                      id: categoryDetails['id'],
+                    ),
+                  );
+                },
               )
             ],
           ),
