@@ -32,7 +32,7 @@ class SuggestionCard extends StatelessWidget {
                     DateFormat('dd/MM/yyyy hh:mm a').format(
                       DateTime.parse(
                         suggestionDetails['created_at'],
-                      ),
+                      ).toLocal(),
                     ),
                     style: Theme.of(context).textTheme.titleSmall?.copyWith(
                           color: Colors.black,
