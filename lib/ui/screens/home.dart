@@ -43,7 +43,7 @@ class _HomeScreenState extends State<HomeScreen>
     );
 
     tabController = TabController(
-      length: 7,
+      length: 6,
       vsync: this,
     );
     super.initState();
@@ -107,7 +107,6 @@ class _HomeScreenState extends State<HomeScreen>
           FoodTypeScreen(),
           FoodScreen(),
           TableScreen(),
-          ComplaintsScreen(),
           SuggestionsScreen(),
         ],
       ),
@@ -199,27 +198,14 @@ class _HomeScreenState extends State<HomeScreen>
                   height: 15,
                 ),
                 CustomDrawerButton(
-                  label: "Order Complaints",
-                  iconData: Icons.report_outlined,
+                  label: "Complaints & Suggestions",
+                  iconData: Icons.reviews_outlined,
                   onPressed: () {
                     tabController.animateTo(5);
                     setState(() {});
                     Navigator.pop(context);
                   },
                   isSelected: tabController.index == 5,
-                ),
-                const SizedBox(
-                  height: 15,
-                ),
-                CustomDrawerButton(
-                  label: "Suggestions",
-                  iconData: Icons.reviews_outlined,
-                  onPressed: () {
-                    tabController.animateTo(6);
-                    setState(() {});
-                    Navigator.pop(context);
-                  },
-                  isSelected: tabController.index == 6,
                 ),
                 const SizedBox(
                   height: 15,

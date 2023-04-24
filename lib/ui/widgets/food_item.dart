@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:restaurant_owner/ui/widgets/custom_card.dart';
 
 class FoodItem extends StatelessWidget {
+  final dynamic foodItemDetails;
   const FoodItem({
     super.key,
+    required this.foodItemDetails,
   });
 
   @override
@@ -14,7 +16,7 @@ class FoodItem extends StatelessWidget {
           ClipRRect(
             borderRadius: BorderRadius.circular(20),
             child: Image.network(
-              'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=481&q=80',
+              foodItemDetails['food_item']['image_url'],
               height: 60,
               width: 60,
               fit: BoxFit.cover,
@@ -29,7 +31,7 @@ class FoodItem extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  'Food Name',
+                  foodItemDetails['food_item']['name'],
                   style: Theme.of(context).textTheme.titleLarge!.copyWith(
                         color: Colors.black,
                         fontWeight: FontWeight.w500,
@@ -39,7 +41,7 @@ class FoodItem extends StatelessWidget {
                   height: 2,
                 ),
                 Text(
-                  '₹1500',
+                  foodItemDetails['quantity'].toString(),
                   style: Theme.of(context).textTheme.labelLarge!.copyWith(
                         color: Colors.black,
                         fontWeight: FontWeight.bold,
@@ -47,6 +49,14 @@ class FoodItem extends StatelessWidget {
                 ),
               ],
             ),
+          ),
+          const SizedBox(width: 10),
+          Text(
+            '₹${foodItemDetails['price'].toString()}',
+            style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                ),
           ),
         ],
       ),
