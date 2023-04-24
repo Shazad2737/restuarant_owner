@@ -270,8 +270,9 @@ class _DashboardAndOrderScreenState extends State<DashboardAndOrderScreen> {
                                           Text(
                                             DateFormat('dd/MM/yyyy hh:mm a')
                                                 .format(DateTime.parse(
-                                                    state.orders[index]
-                                                        ['created_at'])),
+                                                        state.orders[index]
+                                                            ['created_at'])
+                                                    .toLocal()),
                                           ),
                                         ),
                                         DataCell(
